@@ -25,6 +25,10 @@ class reactance():
 		"""
 		In class multiplication ---represents parallel reactance
 		"""
+		if isinstance(other,complex):
+			"""Treat complex numbers as reactance directly without accessing Z_c
+			"""
+			return reactance(self.Z_c*other/(self.Z_c+other))
 		return reactance(self.Z_c*other.Z_c/(self.Z_c+other.Z_c))
 	def __str__(self):
 		return f"reactance({self.Z_c})"
@@ -62,29 +66,25 @@ if __name__ == '__main__':
 	add_check_associativity()
 	mul_check_associativity()
 
-	f=np.linspace(0.1,3,1000)*1e6
+	f=np.linspace(0.01,3,1000)*1e6
 	w=2*np.pi*f
-	Cr1=1e-9
-	alpha=20
-	Cr2=alpha*Cr1
+	c1=1e-9
+	alpha=2
+	c2=alpha*c1
 	Lp=10e-6
-	Rp=1000
-	Cb=100e-9
-	Z_Cr1=reactance(1/(1j*w*Cr1))*0.5
-	Z_Cr2=reactance(1/(1j*w*Cr2))
-	Z_Cr=Z_Cr1+Z_Cr2
-	Z_Lp=reactance(1j*w*Lp)
-	Z_Rp=reactance(Rp+0j)
-	Z_cb=reactance(1/(1j*1*w*Cb))
-	Z_DUT=(Z_Rp*Z_Lp)
+	Rp=500+0j
+	Cb=10e-9
+	R_s=0.0
+	Z_C1=reactance(1/(1j*w*c1))
+	Z_C2=reactance(1/(1j*w*c2))
+	Z_L1 = reactance(1j*w*Lp)
+	Rp = reactance(Rp) # Note a re
+	Zeq=(Z_C1*Z_L1)*Rp
 
-	f_reson=np.sqrt(1/(Lp*(Cr1*Cr2)/(Cr1+Cr2)))/(2*np.pi)
-	print("Resonant frequency", f_reson/1e6)
-	Zeq=(Z_Cr*Z_DUT)+Z_cb
 	fig, ax1 = plt.subplots()
 	ax1.plot(f, Zeq.mag, 'r', label='real')
 	ax1.set_xlabel('Frequency (Hz)')
-	ax1.set_ylabel('real', color='r')
+	ax1.set_ylabel('Mag(real)', color='r')
 	ax1.tick_params(axis='y', labelcolor='r')
 
 	# Create a second y-axis for  Zphase vs f on right axis
@@ -95,5 +95,5 @@ if __name__ == '__main__':
 	# Add title and show plot
 	plt.title('Magnitude and Phase plot')
 	fig.tight_layout()
-
+	plt.savefig("demo.png")
 	plt.show()
