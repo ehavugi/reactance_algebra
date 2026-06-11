@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - given-names: "Emmanuel"
+    family-names: "Havugimana"
+    alias: "ehavugi"
+title: "reactance_algebra"
+version: 1.0.0
+date-released: 2026-06-10
+url: "https://github.com/ehavugi/reactance_algebra"
+repository-code: "https://github.com/ehavugi/reactance_algebra"
+abstract: >-
+  A Python implementation of Reactance algebra that defines addition 
+  (for series connections) and multiplication (for parallel connections).
+keywords:
+  - reactance
+  - algebra
+  - python
+  - circuits
